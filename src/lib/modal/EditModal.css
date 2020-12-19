@@ -1,0 +1,13 @@
+.editPane {
+  background-color: white;
+  display: grid;
+  grid-template-columns: auto 250px;
+  text-align: right;
+  gap: 4px;
+  padding: 4px;
+}
+
+.editButton {
+  grid-column: auto / span 2;
+  place-self: center;
+}

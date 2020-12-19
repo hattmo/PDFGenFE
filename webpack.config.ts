@@ -1,8 +1,9 @@
 import path from "path";
-import { Configuration } from "webpack-dev-server";
+import { Configuration as DSConf } from "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import { Configuration as WPConf, RuleSetRule } from "webpack";
 
-const ts = {
+const ts: RuleSetRule = {
   test: /\.ts(x)?$/,
   use: [
     {
@@ -11,19 +12,35 @@ const ts = {
   ],
 };
 
-const staticFiles = {
-  test: /\.(html|ico|png)$/,
-  loader: "file-loader",
-  options: {
-    name: "/[name].[ext]",
-  },
+const css: RuleSetRule = {
+  test: /\.css$/,
+  use: [
+    {
+      loader: "style-loader",
+    },
+    {
+      loader: "css-loader",
+    },
+  ],
 };
 
-const devServer: Configuration = {
+const staticFiles: RuleSetRule = {
+  test: /\.(html|ico|png)$/,
+  use: [
+    {
+      loader: "file-loader",
+      options: {
+        name: "/[name].[ext]",
+      },
+    },
+  ],
+};
+
+const devServer: DSConf = {
   port: 8081,
   historyApiFallback: true,
   disableHostCheck: true,
-  contentBase: path.resolve(__dirname, "dst/"),
+  contentBase: path.resolve(__dirname, "static/"),
   inline: true,
   hot: true,
 };
@@ -35,19 +52,20 @@ const html = new HtmlWebpackPlugin({
   meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
 });
 
-const config = {
+const config: WPConf = {
   entry: "./src/bin/main.tsx",
   output: {
     path: path.resolve(__dirname, "static/"),
     filename: "bundle.js",
   },
   module: {
-    rules: [ts, staticFiles],
+    rules: [ts, css, staticFiles],
   },
   plugins: [html],
   devServer,
   resolve: {
     extensions: [" ", ".js", ".jsx", ".ts", ".tsx"],
   },
+  devtool:"source-map"
 };
 module.exports = config;

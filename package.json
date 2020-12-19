@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack --watch",
     "prepare": "webpack --mode production && tsc --project .",
-    "start": "webpack-dev-server --watch",
+    "start": "webpack serve",
     "test": "jest --coverage",
     "lint": "prettier --write ./src/** && eslint ./src/**"
   },
@@ -42,5 +42,9 @@
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "css-loader": "^5.0.1",
+    "style-loader": "^2.0.0"
   }
 }
