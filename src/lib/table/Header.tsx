@@ -11,7 +11,7 @@ const Header = ({ headers, onHeaderClicked }: Props) => (
       onClick={() => {
         onHeaderClicked();
       }}
-      className="tableItem tableHeader"
+      className="tableItem tableHeader editCol"
     >
       <img height="15px" src={editImg} alt="" />
     </div>

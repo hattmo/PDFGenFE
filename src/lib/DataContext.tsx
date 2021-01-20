@@ -36,8 +36,8 @@ export const useGetHeaders = () => useContext(ctx).headers;
 
 export const useSetHeaders = () => {
   const { setHeaders } = useContext(ctx);
-  return (vals: string[]) => {
-    setHeaders(vals);
+  return (val: string[]) => {
+    setHeaders(val);
   };
 };
 
@@ -54,13 +54,19 @@ export const useDeleteData = () => {
 
 export const useUpdateData = () => {
   const { setData } = useContext(ctx);
-  return (value: DataItem, index: number) => {
+  return (value: DataItem, index: number | undefined) => {
     setData((prev) => {
-      return [
-        ...prev.slice(0, index),
-        value,
-        ...prev.slice(index + 1, prev.length),
-      ];
+      const i = index ?? prev.length;
+      return [...prev.slice(0, i), value, ...prev.slice(i + 1, prev.length)];
+    });
+  };
+};
+
+export const useAppendData = () => {
+  const { setData } = useContext(ctx);
+  return (value: DataItem[]) => {
+    setData((prev) => {
+      return [...prev, ...value];
     });
   };
 };

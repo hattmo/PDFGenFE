@@ -15,9 +15,11 @@ const Table = ({ onEditClicked, onHeaderClicked }: Props) => {
     display: "grid",
     gridTemplateColumns: `20px repeat(${headers.length},1fr) 20px`,
   };
-  console.log(data);
   return (
-    <div className="table" style={style}>
+    <div
+      className="table"
+      style={style}
+    >
       <Header onHeaderClicked={onHeaderClicked} headers={headers} />
       {data.map((dataItem, i) => {
         return (

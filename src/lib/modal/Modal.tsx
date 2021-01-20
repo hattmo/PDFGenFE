@@ -1,12 +1,17 @@
 import React from "react";
-import "./Modal.css"
+import "./Modal.css";
 
 interface Props {
   onClose: () => void;
+  isOpen: boolean;
 }
 
-const Modal = ({ onClose, children }: React.PropsWithChildren<Props>) => {
-  return (
+const Modal = ({
+  onClose,
+  isOpen,
+  children,
+}: React.PropsWithChildren<Props>) => {
+  return isOpen ? (
     <div
       onClick={() => {
         onClose();
@@ -21,7 +26,7 @@ const Modal = ({ onClose, children }: React.PropsWithChildren<Props>) => {
         {children}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Modal;

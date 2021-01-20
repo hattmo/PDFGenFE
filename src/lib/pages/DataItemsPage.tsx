@@ -1,51 +1,55 @@
 import React, { useState } from "react";
-import { useGetData, useUpdateData } from "../DataContext";
-import EditModal from "../modal/EditModal";
-import HeaderModal from "../modal/HeaderModal";
+import EditForm from "../form/EditForm";
+import HeaderForm from "../form/HeaderForm";
+import Modal from "../modal/Modal";
 import Table from "../table/Table";
 
 const DataItemsPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [headerModalOpen, setHeaderModalOpen] = useState(false);
-  const [rowEditing, setRowEditing] = useState(0);
-  const updateData = useUpdateData();
-  const data = useGetData();
+  const [rowEditing, setRowEditing] = useState<number | undefined>();
   return (
     <div>
       <input
         type="button"
         onClick={() => {
           setEditModalOpen(true);
-          setRowEditing(data.length);
+          setRowEditing(undefined);
         }}
         value="ADD"
       />
-      {editModalOpen ? (
-        <EditModal
-          inputData={data[rowEditing]}
-          onClose={() => {
-            setEditModalOpen(false);
-          }}
-          onSubmit={(newData) => {
-            updateData(newData, rowEditing);
+      <Modal
+        isOpen={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+        }}
+      >
+        <EditForm
+          row={rowEditing}
+          onSubmit={() => {
             setEditModalOpen(false);
           }}
         />
-      ) : null}
-      {headerModalOpen ? (
-        <HeaderModal
-          onClose={() => {
+      </Modal>
+      <Modal
+        isOpen={headerModalOpen}
+        onClose={() => {
+          setHeaderModalOpen(false);
+        }}
+      >
+        <HeaderForm
+          onSubmit={() => {
             setHeaderModalOpen(false);
           }}
         />
-      ) : null}
+      </Modal>
       <Table
         onEditClicked={(row) => {
           setEditModalOpen(true);
           setRowEditing(row);
         }}
-        onHeaderClicked={()=>{
-            setHeaderModalOpen(true);
+        onHeaderClicked={() => {
+          setHeaderModalOpen(true);
         }}
       ></Table>
     </div>

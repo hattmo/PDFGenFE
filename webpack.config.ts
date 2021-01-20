@@ -46,10 +46,17 @@ const devServer: DSConf = {
 };
 
 const html = new HtmlWebpackPlugin({
-  title: "pdfgenfe",
+  title: "PDF Gen",
   filename: "index.html",
   inject: "body",
-  meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
+  minify: false,
+  meta: {
+    viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+    ContentSecurity: {
+      "http-equiv": "Content-Security-Policy",
+      content: "default-src 'self' 'unsafe-inline'",
+    },
+  },
 });
 
 const config: WPConf = {
@@ -66,6 +73,6 @@ const config: WPConf = {
   resolve: {
     extensions: [" ", ".js", ".jsx", ".ts", ".tsx"],
   },
-  devtool:"source-map"
+  devtool: "source-map",
 };
 module.exports = config;
