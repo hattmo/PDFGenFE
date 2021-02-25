@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useAppendData, useGetHeaders } from "../DataContext";
-import { DataItem } from "../table/types";
+import FormStyle from "./FormStyle";
 
 interface Props {
   onSubmit: () => void;
@@ -9,15 +10,16 @@ interface Props {
 }
 
 const FileDropForm = ({ onSubmit, initialHeaders, initialData }: Props) => {
-  const [mapping, setMapping] = useState({});
   const appendData = useAppendData();
   const currHeaders = useGetHeaders();
   const [availHead, unMatchedHead] = findMismatch(currHeaders, initialHeaders);
+  const [mapping, setMapping] = useState(defaultMapping(unMatchedHead));
   if (availHead.length === 0) {
+    appendData(initialData);
     onSubmit();
   }
   return (
-    <div>
+    <FileDropPane>
       {unMatchedHead.map((item, i) => {
         return (
           <React.Fragment>
@@ -28,24 +30,34 @@ const FileDropForm = ({ onSubmit, initialHeaders, initialData }: Props) => {
                 setMapping({ ...mapping, [item]: e.target.value });
               }}
             >
-              {availHead.map((item, i) => {
-                <option key={i} value={item}>
-                  {item}
-                </option>;
-              })}
-              <option value={undefined}>None</option>
+              {availHead
+                .filter(
+                  (availChoice) =>
+                    !(
+                      mapping[item] !== availChoice &&
+                      Object.values(mapping).includes(availChoice)
+                    )
+                )
+                .map((availChoice, i) => {
+                  return (
+                    <option key={i} value={availChoice}>
+                      {availChoice}
+                    </option>
+                  );
+                })}
+              <option value={"None"}>None</option>
             </select>
           </React.Fragment>
         );
       })}
-      <input
+      <FormButton
         onClick={() => {
           appendData(
-            initialData.map((dataItem) => {
+            initialData.map<DataItem>((dataItem) => {
               const mapped = {};
               initialHeaders.forEach((key) => {
-                if (!unMatchedHead.includes(key)) {
-                  if (mapping[key]) {
+                if (unMatchedHead.includes(key)) {
+                  if (mapping[key] !== "None") {
                     mapped[mapping[key]] = dataItem[key];
                   }
                 } else {
@@ -60,13 +72,30 @@ const FileDropForm = ({ onSubmit, initialHeaders, initialData }: Props) => {
         type="button"
         value="ok"
       />
-    </div>
+    </FileDropPane>
   );
+};
+
+const defaultMapping = (unmatched: string[]) => {
+  const out = {};
+  unmatched.forEach((item) => {
+    out[item] = "None";
+  });
+  return out;
 };
 
 const findMismatch = (curr: string[], initial: string[]) => [
   curr.filter((item) => !initial.includes(item)),
   initial.filter((item) => !curr.includes(item)),
 ];
+
+const FileDropPane = styled(FormStyle)`
+  grid-template-columns: auto auto;
+`;
+
+const FormButton = styled.input`
+  grid-column: auto / span 2;
+  place-self: center;
+`;
 
 export default FileDropForm;

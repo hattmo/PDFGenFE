@@ -1,35 +1,21 @@
 import React, { PropsWithChildren, useState } from "react";
 import Modal from "../modal/Modal";
-import csv from "csv-parser";
-import { DataItem } from "../table/types";
-import FileDropForm from "./FileDropForm";
+import FileDropForm from "../form/FileDropForm";
+import FullDiv from "../utility/FullDiv";
 
 const FileDrop = ({ children }: PropsWithChildren<{}>) => {
   const [formOpen, setFormOpen] = useState(false);
   const [initialHeaders, setInitialHeaders] = useState<string[]>([]);
   const [initialData, setInitialData] = useState<DataItem[]>([]);
   return (
-    <div
-      onDrop={(e) => {
+    <FullDiv
+      onDrop={async (e) => {
         e.preventDefault();
-        setFormOpen(false);
-        e.dataTransfer.files[0].text().then((val: string) => {
-          const newData: any[] = [];
-          const parser = csv();
-          parser.write(val);
-          parser.on("data", (data) => {
-            newData.push(data);
-          });
-          parser.on("headers", (headers: string[]) => {
-            setInitialHeaders(headers);
-          });
-          parser.on("end", () => {
-            setInitialData(newData);
-            setFormOpen(true);
-          });
-          parser.on("error", () => {});
-          csv().write(val);
-        });
+        const rawData = await e.dataTransfer.files[0].text();
+        const { headers, data } = await api.parseCSV(rawData);
+        setInitialHeaders(headers);
+        setInitialData(data);
+        setFormOpen(true);
       }}
       onDragOver={(e) => {
         e.preventDefault();
@@ -50,7 +36,7 @@ const FileDrop = ({ children }: PropsWithChildren<{}>) => {
         />
       </Modal>
       {children}
-    </div>
+    </FullDiv>
   );
 };
 

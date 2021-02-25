@@ -1,1 +1,0 @@
-export type DataItem = { [x: string]: string | undefined };

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useGetHeaders, useSetHeaders } from "../DataContext";
 import deleteImg from "../table/delete.png";
-
+import FormStyle from "./FormStyle";
 interface Props {
   onSubmit: () => void;
 }
@@ -10,10 +11,10 @@ const HeaderForm = ({ onSubmit }: Props) => {
   const setHeaders = useSetHeaders();
   const [editHeaders, setEditHeaders] = useState(headers);
   return (
-    <div className="formPane headerPane">
+    <HeaderPane>
       {editHeaders.map((header, index) => {
         return (
-          <React.Fragment>
+          <React.Fragment key={index}>
             <input
               type="text"
               value={header}
@@ -48,8 +49,12 @@ const HeaderForm = ({ onSubmit }: Props) => {
         type="button"
         value="Save"
       />
-    </div>
+    </HeaderPane>
   );
 };
+
+const HeaderPane = styled(FormStyle)`
+  grid-template-columns: 250px auto;
+`;
 
 export default HeaderForm;

@@ -54,7 +54,7 @@ const html = new HtmlWebpackPlugin({
     viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
     ContentSecurity: {
       "http-equiv": "Content-Security-Policy",
-      content: "default-src 'self' 'unsafe-inline'",
+      content: "default-src 'self' 'unsafe-eval' 'unsafe-inline'",
     },
   },
 });

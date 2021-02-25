@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useGetData, useGetHeaders, useUpdateData } from "../DataContext";
-import { DataItem } from "../table/types";
-import "./Forms.css";
+import FormStyle from "./FormStyle";
 
 interface Props {
   onSubmit: () => void;
   row?: number;
 }
+
 const EditForm = ({ onSubmit, row }: Props) => {
   const data = useGetData();
   const updateData = useUpdateData();
@@ -16,7 +17,7 @@ const EditForm = ({ onSubmit, row }: Props) => {
   );
 
   return (
-    <div className="editPane formPane">
+    <EditPane>
       {headers.map((header) => {
         return (
           <React.Fragment>
@@ -31,7 +32,7 @@ const EditForm = ({ onSubmit, row }: Props) => {
           </React.Fragment>
         );
       })}
-      <input
+      <FormButton
         className="formButton"
         onClick={() => {
           updateData(editData, row);
@@ -40,8 +41,18 @@ const EditForm = ({ onSubmit, row }: Props) => {
         type="button"
         value="save"
       />
-    </div>
+    </EditPane>
   );
 };
+
+const EditPane = styled(FormStyle)`
+  grid-template-columns: auto 250px;
+  text-align: right;
+`;
+
+const FormButton = styled.input`
+  grid-column: auto / span 2;
+  place-self: center;
+`;
 
 export default EditForm;

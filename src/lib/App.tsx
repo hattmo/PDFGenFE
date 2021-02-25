@@ -9,11 +9,23 @@ import {
 } from "react-router-dom";
 import Frame from "./frame/Frame";
 import FileDrop from "./fileDrop/FileDrop";
+import { createGlobalStyle } from "styled-components";
+import GlobalItemsPage from "./pages/GlobalItemsPage";
 
+const GlobalStyle = createGlobalStyle`
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+}
+`;
 const App = () => {
   return (
     <Router>
-      <DataContext initialHeaders={["Group", "Name"]}>
+      <GlobalStyle />
+      <DataContext initialHeaders={["one", "two", "three"]}>
         <Frame>
           <Switch>
             <Route path="/data">
@@ -21,7 +33,9 @@ const App = () => {
                 <DataItemsPage />
               </FileDrop>
             </Route>
-            <Route path="/globals"></Route>
+            <Route path="/globals">
+              <GlobalItemsPage />
+            </Route>
             <Route path="/template"></Route>
             <Route>
               <Redirect to="/data" />
