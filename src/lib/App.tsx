@@ -11,6 +11,7 @@ import Frame from "./frame/Frame";
 import FileDrop from "./fileDrop/FileDrop";
 import { createGlobalStyle } from "styled-components";
 import GlobalItemsPage from "./pages/GlobalItemsPage";
+import TemplatePage from "./pages/TemplatePage";
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -25,7 +26,7 @@ const App = () => {
   return (
     <Router>
       <GlobalStyle />
-      <DataContext initialHeaders={["one", "two", "three"]}>
+      <DataContext>
         <Frame>
           <Switch>
             <Route path="/data">
@@ -36,7 +37,9 @@ const App = () => {
             <Route path="/globals">
               <GlobalItemsPage />
             </Route>
-            <Route path="/template"></Route>
+            <Route path="/template">
+              <TemplatePage />
+            </Route>
             <Route>
               <Redirect to="/data" />
             </Route>

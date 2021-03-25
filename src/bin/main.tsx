@@ -10,10 +10,10 @@ if (!globalThis.api) {
   globalThis.api = {
     parseCSV: () =>
       Promise.resolve({
-        headers: ["one", "five", "four", "six"],
-        data: [{ one: "foo", five: "bar", four: "baz", six: "blooz" }],
+        headers: ["one", "two", "three", "four"],
+        data: [{ one: "foo", two: "bar", three: "baz", four: "blooz" }],
       }),
-    getFields: () => Promise.resolve("Blah"),
+    getFields: () => Promise.resolve(["foo", "bar", "baz"]),
   };
 }
 

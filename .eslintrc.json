@@ -7,7 +7,8 @@
     "google",
     "prettier",
     "prettier/@typescript-eslint",
-    "prettier/react"
+    "prettier/react",
+    "plugin:react-hooks/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -23,7 +24,7 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "no-console":"warn",
+    "no-console": "warn",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "quotes": "off",

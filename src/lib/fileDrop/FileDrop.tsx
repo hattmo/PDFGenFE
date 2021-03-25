@@ -11,11 +11,16 @@ const FileDrop = ({ children }: PropsWithChildren<{}>) => {
     <FullDiv
       onDrop={async (e) => {
         e.preventDefault();
-        const rawData = await e.dataTransfer.files[0].text();
-        const { headers, data } = await api.parseCSV(rawData);
-        setInitialHeaders(headers);
-        setInitialData(data);
-        setFormOpen(true);
+        const file = e.dataTransfer.files[0];
+        if (file.name.endsWith(".csv")) {
+          const { headers, data } = await api.parseCSV(await file.text());
+          setInitialHeaders(headers);
+          setInitialData(data);
+          setFormOpen(true);
+        } else if (file.name.endsWith(".pdf")) {
+          const buff = await file.arrayBuffer();
+          api.uploadPDF(buff);
+        }
       }}
       onDragOver={(e) => {
         e.preventDefault();
